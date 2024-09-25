@@ -41,6 +41,7 @@
 #include <sys/zfs_ioctl.h>
 #include <sys/zfs_znode.h>
 #include <sys/dsl_crypt.h>
+#include <sys/simd.h>
 
 #include "zfs_prop.h"
 #include "zfs_deleg.h"
@@ -361,7 +362,7 @@ zfs_prop_init(void)
 
 	static const zprop_index_t xattr_table[] = {
 		{ "off",	ZFS_XATTR_OFF },
-		{ "on",		ZFS_XATTR_DIR },
+		{ "on",		ZFS_XATTR_SA },
 		{ "sa",		ZFS_XATTR_SA },
 		{ "dir",	ZFS_XATTR_DIR },
 		{ NULL }
@@ -474,7 +475,7 @@ zfs_prop_init(void)
 	zprop_register_index(ZFS_PROP_LOGBIAS, "logbias", ZFS_LOGBIAS_LATENCY,
 	    PROP_INHERIT, ZFS_TYPE_FILESYSTEM | ZFS_TYPE_VOLUME,
 	    "latency | throughput", "LOGBIAS", logbias_table, sfeatures);
-	zprop_register_index(ZFS_PROP_XATTR, "xattr", ZFS_XATTR_DIR,
+	zprop_register_index(ZFS_PROP_XATTR, "xattr", ZFS_XATTR_SA,
 	    PROP_INHERIT, ZFS_TYPE_FILESYSTEM | ZFS_TYPE_SNAPSHOT,
 	    "on | off | dir | sa", "XATTR", xattr_table, sfeatures);
 	zprop_register_index(ZFS_PROP_DNODESIZE, "dnodesize",
@@ -1082,6 +1083,7 @@ zcommon_init(void)
 		return (error);
 
 	fletcher_4_init();
+	simd_stat_init();
 
 	return (0);
 }
@@ -1089,6 +1091,7 @@ zcommon_init(void)
 void
 zcommon_fini(void)
 {
+	simd_stat_fini();
 	fletcher_4_fini();
 	kfpu_fini();
 }

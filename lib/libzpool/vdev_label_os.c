@@ -20,25 +20,32 @@
  */
 
 /*
- * Copyright (c) 2020 by Delphix. All rights reserved.
+ * Copyright (c) 2023 by iXsystems, Inc.
  */
 
-#ifndef _ZFS_PERCPU_H
-#define	_ZFS_PERCPU_H
-
-#include <linux/percpu_counter.h>
+#include <sys/zfs_context.h>
+#include <sys/spa.h>
+#include <sys/spa_impl.h>
+#include <sys/vdev.h>
+#include <sys/vdev_impl.h>
 
 /*
- * 3.18 API change,
- * percpu_counter_init() now must be passed a gfp mask which will be
- * used for the dynamic allocation of the actual counter.
+ * Check if the reserved boot area is in-use. This is called from
+ * spa_vdev_attach() when adding a device to a raidz vdev, to ensure that the
+ * reserved area is available as scratch space for raidz expansion.
+ *
+ * This function currently always returns 0. On Linux, there are no known
+ * external uses of the reserved area. On FreeBSD, the reserved boot area is
+ * used when booting to a ZFS root from an MBR partition.
+ *
+ * Currently nothing using libzpool can add a disk to a pool, so this does
+ * nothing.
  */
-#ifdef HAVE_PERCPU_COUNTER_INIT_WITH_GFP
-#define	percpu_counter_init_common(counter, n, gfp) \
-	percpu_counter_init(counter, n, gfp)
-#else
-#define	percpu_counter_init_common(counter, n, gfp) \
-	percpu_counter_init(counter, n)
-#endif
+int
+vdev_check_boot_reserve(spa_t *spa, vdev_t *childvd)
+{
+	(void) spa;
+	(void) childvd;
 
-#endif /* _ZFS_PERCPU_H */
+	return (0);
+}
