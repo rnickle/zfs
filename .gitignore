@@ -80,6 +80,8 @@
 .libs
 .dirstamp
 .DS_Store
+.venv
+.eggs
 modules.order
 Makefile
 Makefile.in

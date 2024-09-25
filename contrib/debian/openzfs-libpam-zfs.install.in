@@ -1,0 +1,4 @@
+lib/*/security/pam_zfs_key.so
+usr/share/pam-configs/zfs_key
+usr/src/*/config/user-pam.m4
+usr/share/zfs/zfs-tests/tests/functional/pam
