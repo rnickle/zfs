@@ -75,6 +75,7 @@
 *.gcno
 *.gcda
 *.pyc
+__pycache__/**
 *.pyo
 .deps
 .libs
