@@ -2,13 +2,13 @@ dist_noinst_DATA += %D%/libzfs_core %D%/README %D%/LICENSE %D%/docs
 SUBSTFILES += %D%/setup.py
 
 if PYZFS_ENABLED
-ALL_LOCAL += pyzfs-all-local pyzfs-bdist_wheel-local
+ALL_LOCAL += pyzfs-all-local pyzfs-pip-wheel
 pyzfs_V_1 = -v
 pyzfs-all-local: %D%/setup.py
 	cd %D% && $(PYTHON) setup.py -q $(pyzfs_V_$(V)) egg_info -e . build
 
 pyzfs-bdist_wheel-local: %D%/setup.py
-	cd %D% && $(PYTHON) setup.py -q $(pyzfs_V_$(V)) bdist_wheel -e . build
+	cd %D% && pip wheel .
 
 
 #
