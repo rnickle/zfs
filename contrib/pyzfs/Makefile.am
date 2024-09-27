@@ -8,7 +8,7 @@ pyzfs-all-local: %D%/setup.py
 	cd %D% && $(PYTHON) setup.py -q $(pyzfs_V_$(V)) egg_info -e . build
 
 pyzfs-pip-wheel: %D%/setup.py
-	cd %D% && pip wheel
+	cd %D% && pip wheel .
 	
 #
 # On Debian (Ubuntu, and other downstream distros) the install location of
