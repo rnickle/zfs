@@ -65,6 +65,8 @@
 #
 # Normal rules
 #
+__pycache__/**
+
 *.[oa]
 *.o.ur-safe
 *.lo
@@ -76,10 +78,13 @@
 *.gcda
 *.pyc
 *.pyo
+*.whl
 .deps
+.eggs
 .libs
 .dirstamp
 .DS_Store
+.venv
 modules.order
 Makefile
 Makefile.in
