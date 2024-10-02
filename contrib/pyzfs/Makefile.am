@@ -2,14 +2,16 @@ dist_noinst_DATA += %D%/libzfs_core %D%/README %D%/LICENSE %D%/docs
 SUBSTFILES += %D%/setup.py
 
 if PYZFS_ENABLED
-ALL_LOCAL += pyzfs-all-local pyzfs-pip-wheel
+ALL_LOCAL += pyzfs-all-local
 pyzfs_V_1 = -v
+if SETUPTOOLS_ENABLED
+pyzfs-all-local: %D%/setup.py
+	cd %D% && $(PYTHON) -m build
+else
 pyzfs-all-local: %D%/setup.py
 	cd %D% && $(PYTHON) setup.py -q $(pyzfs_V_$(V)) egg_info -e . build
+endif
 
-pyzfs-pip-wheel: %D%/setup.py
-	cd %D% && pip wheel .
-	
 #
 # On Debian (Ubuntu, and other downstream distros) the install location of
 # Python packages is "../dist-packages" instead of "../site-packages" [1].
@@ -38,4 +40,7 @@ install-exec-local:
 CLEAN_LOCAL += pyzfs-clean-local
 pyzfs-clean-local:
 	-$(RM) -r %D%/build/ %D%/pyzfs.egg-info/
+if SETUPTOOLS_ENABLED
+	-$(RM) -r %D%/*.whl %D%/dist
+endif
 endif
